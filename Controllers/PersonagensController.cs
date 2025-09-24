@@ -86,7 +86,7 @@ namespace RpgApi.Controllers
                 _context.TB_PERSONAGENS.Update(novoPersonagem);
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
-                return Ok(linhasAfetadas)
+                return Ok(linhasAfetadas);
             }
             catch (System.Exception ex)
             {
