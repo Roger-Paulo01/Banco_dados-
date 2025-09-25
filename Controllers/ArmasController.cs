@@ -28,11 +28,11 @@ namespace RpgApi.Controllers
                 Arma p = await _context.TB_ARMAS
                     .FirstOrDefaultAsync(pBusca => pBusca.Id == id);
 
-                return Ok(p);    
+                return Ok(p);
             }
             catch (System.Exception ex)
             {
-                
+
                 return BadRequest(ex.Message);
             }
         }
@@ -46,7 +46,7 @@ namespace RpgApi.Controllers
                 return Ok(lista);
             }
             catch (System.Exception ex)
-            {               
+            {
                 return BadRequest(ex.Message);
             }
         }
@@ -84,6 +84,23 @@ namespace RpgApi.Controllers
                 int linhasAfetadas = await _context.SaveChangesAsync();
 
                 return Ok(linhasAfetadas);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                Arma aRemover = await _context.TB_ARMAS.FirstOrDefaultAsync(a => a.Id == id);
+
+                _context.TB_ARMAS.Remove(aRemover);
+                int linhaAfetadas = await _context.SaveChangesAsync();
+                return Ok(linhaAfetadas);
             }
             catch (System.Exception ex)
             {
