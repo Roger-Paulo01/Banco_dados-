@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using RpgApi.Models;
 using RpgApi.Models.Enuns;
 using RpgApi.Utils;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace RpgApi.Data
 {
@@ -33,6 +34,12 @@ namespace RpgApi.Data
                 .HasForeignKey(e => e.UsuarioId)
                 .IsRequired(false);
 
+                modelBuilder.Entity<Personagem>()
+                    .HasOne(e => e.Arma)
+                    .WithOne(e => e.Personagem)
+                    .HasForeignKey<Arma>(e => e.PersonagemId)
+                    .IsRequired();
+
 
             modelBuilder.Entity<Personagem>().HasData
             (
@@ -49,14 +56,14 @@ namespace RpgApi.Data
             modelBuilder.Entity<Arma>().ToTable("TB_ARMA");
             modelBuilder.Entity<Arma>().HasData
             (
-                new Arma() { Id = 1, Nome = "Anel de Sauron", Dano = 7 },
-                new Arma() { Id = 2, Nome = "Chicotinho", Dano = 2 },
-                new Arma() { Id = 3, Nome = "Cajado do Inferno", Dano = 4 } ,
-                new Arma() { Id = 4, Nome = "Poção de Veneno de serpente", Dano = 3 },
-                new Arma() { Id = 5, Nome = "Machado de Thor", Dano = 6 },
-                new Arma() { Id = 6, Nome = "Escudo de Escama de Dragão", Dano = 1},
-                new Arma() { Id = 7, Nome = "Espada Forphal", Dano = 4 },
-                new Arma() { Id = 8, Nome = "Excalibur", Dano = 7 }
+                new Arma() { Id = 1, Nome = "Anel de Sauron", Dano = 7, PersonagemId= 1 },
+                new Arma() { Id = 2, Nome = "Chicotinho", Dano = 2, PersonagemId= 2  },
+                new Arma() { Id = 3, Nome = "Cajado do Inferno", Dano = 4, PersonagemId= 3  } ,
+                new Arma() { Id = 4, Nome = "Poção de Veneno de serpente", Dano = 3, PersonagemId= 4  },
+                new Arma() { Id = 5, Nome = "Machado de Thor", Dano = 6, PersonagemId= 5  },
+                new Arma() { Id = 6, Nome = "Escudo de Escama de Dragão", Dano = 1, PersonagemId= 6 },
+                new Arma() { Id = 7, Nome = "Espada Forphal", Dano = 4, PersonagemId= 7  },
+                new Arma() { Id = 8, Nome = "Excalibur", Dano = 7, PersonagemId= 8  }
             );
 
              //Início da criação do usuário padrão.
@@ -79,6 +86,12 @@ namespace RpgApi.Data
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             configurationBuilder.Properties<string>().HaveColumnType("varchar").HaveMaxLength(200);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(warnings => warnings
+                .Ignore(RelationalEventId.PendingModelChangesWarning));
         }
     }
 }

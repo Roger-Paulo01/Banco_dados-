@@ -10,5 +10,7 @@ namespace RpgApi.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public int Dano { get; set;  }
+        public Personagem? Personagem { get; set; } = null!;
+        public int? PersonagemId { get; set; }
     }
 }
