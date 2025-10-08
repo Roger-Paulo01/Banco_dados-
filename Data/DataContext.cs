@@ -81,7 +81,10 @@ namespace RpgApi.Data
 
             modelBuilder.Entity<Usuario>().HasData(user);
             //Fim da criação do usuário padrão.
-        }
+
+            //Define que se o Perfil não informado, o valor padrão será jogador
+            modelBuilder.Entity<Usuario>().Property(u => u.Perfil).HasDefaultValue("Jogador");
+        }//fim do método OnModelCreating
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
