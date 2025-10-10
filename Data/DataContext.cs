@@ -22,11 +22,16 @@ namespace RpgApi.Data
         public DbSet<Personagem> TB_PERSONAGENS { get; set; }
         public DbSet<Arma> TB_ARMAS { get; set; }
         public DbSet<Usuario> TB_USUARIO { get; set; }
+        public DbSet<Habilidade> TB_HABILIDADES { get; set; }
+        public DbSet<PersonagemHabilidade> TB_PERSONAGENS_HABILIDADES { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Personagem>().ToTable("TB_PERSONAGENS");
             modelBuilder.Entity<Usuario>().ToTable("TB_USUARIOS");
+            modelBuilder.Entity<Habilidade>().ToTable("TB_HABILIDADES");
+            modelBuilder.Entity<PersonagemHabilidade>().ToTable("TB_PERSONAGENS_HABILIDADES");
+            
 
             modelBuilder.Entity<Usuario>()
                 .HasMany(e => e.Personagens)
@@ -50,20 +55,44 @@ namespace RpgApi.Data
                 new Personagem() { Id = 4, Nome = "Gandalf", PontosVida = 100, Forca = 18, Defesa = 18, Inteligencia = 37, Classe = ClasseEnum.Mago, UsuarioId = 1 },
                 new Personagem() { Id = 5, Nome = "Hobbit", PontosVida = 100, Forca = 20, Defesa = 17, Inteligencia = 31, Classe = ClasseEnum.Cavaleiro, UsuarioId = 1 },
                 new Personagem() { Id = 6, Nome = "Celeborn", PontosVida = 100, Forca = 21, Defesa = 13, Inteligencia = 34, Classe = ClasseEnum.Clerigo, UsuarioId = 1 },
-                new Personagem() { Id = 7, Nome = "Radagast", PontosVida = 100, Forca = 25, Defesa = 11, Inteligencia = 35, Classe = ClasseEnum.Mago, UsuarioId = 1 }
+                new Personagem() { Id = 7, Nome = "Radagast", PontosVida = 100, Forca = 25, Defesa = 11, Inteligencia = 35, Classe = ClasseEnum.Mago, UsuarioId = 1 },
+                new Personagem() { Id = 8, Nome = "Mario", PontosVida = 80, Forca = 30, Defesa = 12, Inteligencia = 30, Classe = ClasseEnum.Mago, UsuarioId = 1 }
+
             );
 
             modelBuilder.Entity<Arma>().ToTable("TB_ARMA");
             modelBuilder.Entity<Arma>().HasData
             (
-                new Arma() { Id = 1, Nome = "Anel de Sauron", Dano = 7, PersonagemId= 1 },
-                new Arma() { Id = 2, Nome = "Chicotinho", Dano = 2, PersonagemId= 2  },
-                new Arma() { Id = 3, Nome = "Cajado do Inferno", Dano = 4, PersonagemId= 3  } ,
-                new Arma() { Id = 4, Nome = "Poção de Veneno de serpente", Dano = 3, PersonagemId= 4  },
-                new Arma() { Id = 5, Nome = "Machado de Thor", Dano = 6, PersonagemId= 5  },
-                new Arma() { Id = 6, Nome = "Escudo de Escama de Dragão", Dano = 1, PersonagemId= 6 },
-                new Arma() { Id = 7, Nome = "Espada Forphal", Dano = 4, PersonagemId= 7  },
-                new Arma() { Id = 8, Nome = "Excalibur", Dano = 7, PersonagemId= 8  }
+                new Arma() { Id = 1, Nome = "Anel de Sauron", Dano = 7, PersonagemId = 1 },
+                new Arma() { Id = 2, Nome = "Chicotinho", Dano = 2, PersonagemId = 2 },
+                new Arma() { Id = 3, Nome = "Cajado do Inferno", Dano = 4, PersonagemId = 3 },
+                new Arma() { Id = 4, Nome = "Poção de Veneno de serpente", Dano = 3, PersonagemId = 4 },
+                new Arma() { Id = 5, Nome = "Machado de Thor", Dano = 6, PersonagemId = 5 },
+                new Arma() { Id = 6, Nome = "Escudo de Escama de Dragão", Dano = 1, PersonagemId = 6 },
+                new Arma() { Id = 7, Nome = "Espada Forphal", Dano = 4, PersonagemId = 7 },
+                new Arma() { Id = 8, Nome = "Excalibur", Dano = 7, PersonagemId = 8 }
+            );
+
+            modelBuilder.Entity<PersonagemHabilidade>()
+                .HasKey(ph => new { ph.PersonagemId, ph.HabilidadeId });
+                
+            modelBuilder.Entity<Habilidade>().HasData
+            (
+                new Habilidade() { Id = 1, Nome = "Adormecer", Dano = 39 },
+                new Habilidade() { Id = 2, Nome = "Congelar", Dano = 41 },
+                new Habilidade() { Id = 3, Nome = "Hipnotizar", Dano = 37 }
+            );
+
+            modelBuilder.Entity<PersonagemHabilidade>().HasData
+            (
+                new PersonagemHabilidade() { PersonagemId = 1, HabilidadeId = 1 },
+                new PersonagemHabilidade() { PersonagemId = 1, HabilidadeId = 2 },
+                new PersonagemHabilidade() { PersonagemId = 2, HabilidadeId = 2 },
+                new PersonagemHabilidade() { PersonagemId = 3, HabilidadeId = 3 },
+                new PersonagemHabilidade() { PersonagemId = 4, HabilidadeId = 3 },
+                new PersonagemHabilidade() { PersonagemId = 5, HabilidadeId = 2 },
+                new PersonagemHabilidade() { PersonagemId = 6, HabilidadeId = 1 },
+                new PersonagemHabilidade() { PersonagemId = 7, HabilidadeId = 3 }
             );
 
              //Início da criação do usuário padrão.
